@@ -10,11 +10,11 @@ PullUpDownLibrary is the customizion of ICSPullToRefresh Library.It provide the 
 
 ## Use
 
-This control is usabel in case of pull to refresh and infinite scroll view.
+ -> Provide pull to refresh and infinite scroll view functionality.
 
-In inifite scroll user can stop blog implementation on basis of particular scenerio.  
+ -> In inifite scroll user can stop implementation on basis of particular scenerio.  
 
-User can select the color and font for label "No More Record"
+ -> User can select the color and font for label "No More Record"
 
 
 ## Implementation
