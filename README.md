@@ -19,8 +19,11 @@ User can select the color and font for label "No More Record"
 **Pull to refresh :**
 
 tableView.addPullToRefreshHandler {
+
 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+
 print("Pull to refresh action")
+
 })
 }
 
