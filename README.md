@@ -22,17 +22,16 @@ PullUpDownLibrary is the customizion of ICSPullToRefresh Library.It provide the 
 
 **Pull to refresh :**
 
-tableView.addPullToRefreshHandler {
+    tableView.addPullToRefreshHandler {
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-
-
-    print("Pull to refresh action")
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
 
 
-})
+            print("Pull to refresh action")
 
-}
+    })
+
+    }
 
 
 
@@ -40,11 +39,11 @@ tableView.addPullToRefreshHandler {
 
 //Set the Color of Label 
 
-var fontForInfiniteScrolling = UIFont(name: "HelveticaNeue-Bold", size: 15) ?? UIFont.boldSystemFontOfSize(17)
+    var fontForInfiniteScrolling = UIFont(name: "HelveticaNeue-Bold", size: 15) ?? UIFont.boldSystemFontOfSize(17)
 
 // Add Handler
 
-self.tableView.addInfiniteScrollingWithHandler(fontForInfiniteScrolling, fontColor: UIColor.redColor(), actionHandler: {
+    self.tableView.addInfiniteScrollingWithHandler(fontForInfiniteScrolling, fontColor: UIColor.redColor(), actionHandler: {
 
 
           //condition to stop calling function
@@ -58,23 +57,27 @@ self.tableView.addInfiniteScrollingWithHandler(fontForInfiniteScrolling, fontCol
 
           print("Infinite scroller action")
 
-})
+         })
 
-}
-}
+    }
+    }
 
-/**
 
-// Set this to false if there is no more data on the server. This should be triggered in the service response.
-        self.tableView.infiniteScrollingView?.hasMoreData = false
 
-hasMoreData false will display "No more record" Label at the bottom of the tableview.
-*/
+    // Set this to false if there is no more data on the server. This should be triggered in the service response.
+      
+              self.tableView.infiniteScrollingView?.hasMoreData = false
+
+    // hasMoreData false will display "No more record" Label at the bottom of the tableview.
+
+
+
 
 **Remove Loader :**
 
-self.pullToRefreshView?.stopAnimating()
-self.infiniteScrollingView?.stopAnimating()
+    self.pullToRefreshView?.stopAnimating()
+
+    self.infiniteScrollingView?.stopAnimating()
 
 
 
