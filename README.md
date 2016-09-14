@@ -32,7 +32,7 @@ print("Pull to refresh action")
 
 
 
-** Load More Data :**
+**Load More Data :**
 
 //Set the Color of Label 
 
