@@ -26,7 +26,6 @@ PullUpDownLibrary is the customizion of ICSPullToRefresh Library.It provide the 
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
 
-
             print("Pull to refresh action")
 
     })
@@ -51,9 +50,7 @@ PullUpDownLibrary is the customizion of ICSPullToRefresh Library.It provide the 
 
     if self.tableView.infiniteScrollingView!.hasMoreData {  
 
-
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-
 
           print("Infinite scroller action")
 
