@@ -33,11 +33,11 @@ public extension UIScrollView {
 	}
 
     /// Show Infinite scrolling true/false
-    
+
 	public var showsInfiniteScrolling: Bool {
 		return infiniteScrollingView != nil ? infiniteScrollingView!.hidden : false
 	}
-    
+
     /// Set has more data to represent "No More Records" after infinite scroll
 
 	public var hasMoreData: Bool {
@@ -48,7 +48,7 @@ public extension UIScrollView {
 			infiniteScrollingView!.hasMoreData = newValue
 		}
 	}
-    
+
     /// Set the font of "No more record" label
 
 	public var font: UIFont {
@@ -59,7 +59,7 @@ public extension UIScrollView {
 			infiniteScrollingView!.labelNoMoreRecord.font = newValue
 		}
 	}
-    
+
     /// Set teh Font color of No More Record label
 
 	public var fontColor: UIColor {
@@ -72,7 +72,7 @@ public extension UIScrollView {
 	}
     /**
      Add the infinite Scroll Handler
-     
+
      - parameter actionHandler: actionHandler Add Infinite scroll View at end of the table View
      */
 
@@ -86,10 +86,10 @@ public extension UIScrollView {
 		infiniteScrollingView?.actionHandler = actionHandler
 		setShowsInfiniteScrolling(true)
 	}
-    
+
     /**
       Add the infinite Scroll Handler  with font and color of Label No Record
-     
+
      - parameter font:          Font of label
      - parameter fontColor:     font color of label
      - parameter actionHandler: action handler
@@ -121,8 +121,8 @@ public extension UIScrollView {
 	}
 
     /**
-     Set the infinite scrolling 
-     
+     Set the infinite scrolling
+
      - parameter showsInfiniteScrolling:  true/false
      */
 	public func setShowsInfiniteScrolling(showsInfiniteScrolling: Bool) {
@@ -139,7 +139,7 @@ public extension UIScrollView {
 		}
 	}
     //MARK:- Observer
-    
+
     /**
      Add Observer on infinite scrolling View
      */
@@ -155,7 +155,7 @@ public extension UIScrollView {
     /**
      Remove observer on Infinite scroll view
      */
-    
+
 	func removeInfiniteScrollingViewObservers() {
 		if infiniteScrollingView != nil && infiniteScrollingView!.isObserving {
 			removeObserver(infiniteScrollingView!, forKeyPath: observeKeyContentOffset)
@@ -173,7 +173,7 @@ public class InfiniteScrollingView: UIView {
 	public var actionHandler: ActionHandler?
     /// Bool values
 	public var isObserving: Bool = false
-    
+
     /// scrollView
     	public var scrollView: UIScrollView? {
 		return self.superview as? UIScrollView
@@ -182,7 +182,7 @@ public class InfiniteScrollingView: UIView {
 	public var scrollViewOriginContentBottomInset: CGFloat = 0
     /**
      enum
-     
+
      - Stopped:   To stop infinite scrolling
      - Triggered: To trigger the infinte scrolling on
      - Loading:   Load the data
@@ -227,7 +227,7 @@ public class InfiniteScrollingView: UIView {
 			}
 		}
 	}
-    
+
     //MARK: Initialize methods
 
 	public override init(frame: CGRect) {
@@ -253,7 +253,7 @@ public class InfiniteScrollingView: UIView {
 	public func stopAnimating() {
 		state = .Stopped
 	}
-    
+
 	public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
 		if keyPath == observeKeyContentOffset {
 			srollViewDidScroll(change?[NSKeyValueChangeNewKey]?.CGPointValue)
@@ -266,7 +266,7 @@ public class InfiniteScrollingView: UIView {
 	}
 
     //MARK: Scroll View Methods
-    
+
 	private func srollViewDidScroll(contentOffset: CGPoint?) {
 		if scrollView == nil || contentOffset == nil {
 			return
@@ -286,8 +286,8 @@ public class InfiniteScrollingView: UIView {
 			}
 		}
 	}
-    
-    
+
+
 	private func setScrollViewContentInset(contentInset: UIEdgeInsets) {
 		UIView.animateWithDuration(0.3, delay: 0, options: [.AllowUserInteraction, .BeginFromCurrentState], animations: { () -> Void in
    			self.scrollView?.contentInset = contentInset
@@ -317,12 +317,11 @@ public class InfiniteScrollingView: UIView {
 		currentInset.bottom = scrollViewOriginContentBottomInset + ICSInfiniteScrollingViewHeight
 		setScrollViewContentInset(currentInset)
 	}
-    
+
     //MARK: Set Layout
     /**
      Set the frames and states of scroll View
      */
-
 	public override func layoutSubviews() {
 		super.layoutSubviews()
 		let screenSize: CGRect = UIScreen.mainScreen().bounds
@@ -366,9 +365,8 @@ public class InfiniteScrollingView: UIView {
 		defaultView.addSubview(activityIndicator)
 		defaultView.addSubview(labelNoMoreRecord)
 	}
-    
+
     /// Default View to take View's Bounds
-    
 	lazy var defaultView: UIView = {
 		let view = UIView()
 		view.backgroundColor = UIColor.clearColor()
@@ -377,7 +375,6 @@ public class InfiniteScrollingView: UIView {
 	}()
 
     /// Show the activity indicator when Infinite scroller works
-    
 	lazy var activityIndicator: UIActivityIndicatorView = {
 		let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
 		activityIndicator.hidesWhenStopped = true
@@ -385,7 +382,6 @@ public class InfiniteScrollingView: UIView {
 	}()
 
 	/// Create label for "No more records" in infinite scroll
-
 	lazy var labelNoMoreRecord: UILabel = {
 
 		let labelNoMoreRecord = UILabel(frame: CGRect.init(x: 0, y: 0, width: self.bounds.width, height: ICSInfiniteScrollingViewHeight))
@@ -397,5 +393,4 @@ public class InfiniteScrollingView: UIView {
 
 		return labelNoMoreRecord
 	}()
-
 }

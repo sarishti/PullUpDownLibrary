@@ -18,10 +18,7 @@ class TableViewController: UIViewController {
 	@IBOutlet weak var tableView: UITableView!
 
 	/// array
-	var arrayData = ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10", "Test11", "Test12", "Test13", "Test14", "Test15", "Test16", "Test17", "Test18", "Test19", "Test20"]
-
-	/// Global Offset value
-	var articleOffSet = 0
+	var arrayData = [String]()
 
 	/// Paggination Limit
 	let articlesLimit = 20
@@ -31,7 +28,7 @@ class TableViewController: UIViewController {
 
 		self.setPullToRefreshOnTable()
 		self.setInfiniteScrollOnTable()
-
+		self.fetchData(0)
 		// Do any additional setup after loading the view.
 	}
 
@@ -49,6 +46,7 @@ class TableViewController: UIViewController {
          */
 		tableView.addPullToRefreshHandler {
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+
 				/**
                  When pull to refresh works every time call the fetch data function with offset 0
                  */
@@ -75,9 +73,8 @@ class TableViewController: UIViewController {
                  */
 				if self.tableView.infiniteScrollingView!.hasMoreData {
 					dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-
-						self.loadMoreData(with: self.articleOffSet)
-
+						// Send the next starting offset.
+						self.loadMoreData(with: self.arrayData.count)
 					})
 				}
 
@@ -94,13 +91,7 @@ class TableViewController: UIViewController {
 		guard let cell: TableViewCell = tableView.dequeueReusableCellWithIdentifier(tableViewCellIdentifier, forIndexPath: indexPath) as? TableViewCell else {
 			return UITableViewCell()
 		}
-
 		cell.textLabel?.text = arrayData[indexPath.row]
-
-		if arrayData.count - 1 == indexPath.row {
-			self.articleOffSet = arrayData.count
-
-		}
 
 		return cell
 	}
@@ -122,28 +113,41 @@ class TableViewController: UIViewController {
 
 	func fetchData(offset: Int) {
 
-		if offset > 0 {
-			arrayData.appendContentsOf(["Test21", "Test22", "Test23", "Test24", "Test25", "Test26", "Test27", "Test28", "Test29", "Test30"])
-		}
-		// sleep to show indicator for some time
-		sleep(3)
+		var arrResponseData = [String]()
+
 		dispatch_async(dispatch_get_main_queue(), { () -> Void in
+			/**
+             *  arrResponse data represent the array of data which will come from service
+             */
+			if offset == 0 {
+				arrResponseData = ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10", "Test11", "Test12", "Test13", "Test14", "Test15", "Test16", "Test17", "Test18", "Test19", "Test20"]
+				self.arrayData = arrResponseData
+				/**
+                 In pull to refresh No more record should not display
+                 */
+				self.tableView.infiniteScrollingView?.hasMoreData = true
+			} else {
+				arrResponseData = ["Test21", "Test22", "Test23", "Test24", "Test25", "Test26", "Test27", "Test28", "Test29", "Test30"]
+				self.arrayData.appendContentsOf(arrResponseData)
+			}
+
+			// sleep to show indicator for some time, though it's not required while service call.
+			sleep(3)
+
 			/**
              *  Remove the Loader of Pull to refresh/Infinite scroller added on extension
              */
 			self.tableView.loaderStopAnimating()
 
-			if self.arrayData.count < self.articlesLimit * 2 && self.arrayData.count > self.articlesLimit {
+			// Condition to stop load more data
+			if arrResponseData.count < self.articlesLimit {
 				/**
                  Has no more data false will show "No more record" at the bottom
                  */
 				self.tableView.infiniteScrollingView?.hasMoreData = false
 			}
-
 			self.tableView.reloadData()
 
 		})
-
 	}
-
 }

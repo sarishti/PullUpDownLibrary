@@ -1,7 +1,7 @@
 # PullUpDownLibrary
 ===========
-      Swift 3.0
-      Protcol Oriented Progarmming (Extension) 
+Swift 3.0
+Protcol Oriented Progarmming (Extension) 
 
 ## Summary
 
@@ -10,54 +10,58 @@ PullUpDownLibrary is the customizion of ICSPullToRefresh Library.It provide the 
 
 ## Use
 
- -> Provide pull to refresh and infinite scroll view functionality.
+-> Provide pull to refresh and infinite scroll view functionality.
 
- -> In inifite scroll user can stop implementation on basis of particular scenerio.  
+-> In inifite scroll user can stop implementation on basis of particular scenerio.  
 
- -> User can select the color and font for label "No More Record"
+-> User can select the color and font for label "No More Record"
 
 
 ## Implementation
 
 **Pull to refresh :**
 
-  tableView.addPullToRefreshHandler {
+tableView.addPullToRefreshHandler {
 
-         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
 
-        print("Pull to refresh action")
+print("Pull to refresh action")
 
-      })
+})
 }
 
-**Set the Color of Label :**
 
-        UIFont(name: "HelveticaNeue-Bold", size: 15) ?? UIFont.boldSystemFontOfSize(17)
 
-/**
-Has no more data false will show "No more record" Label 
-*/
+** Load More Data :**
 
-        self.tableView.infiniteScrollingView?.hasMoreData = false
+//Set the Color of Label 
 
-**Add infinite Scroller :**
+var fontForInfiniteScrolling = UIFont(name: "HelveticaNeue-Bold", size: 15) ?? UIFont.boldSystemFontOfSize(17)
 
 self.tableView.addInfiniteScrollingWithHandler(fontForInfiniteScrolling, fontColor: UIColor.redColor(), actionHandler: {
 
-          //condition to stop calling function
-         if self.tableView.infiniteScrollingView!.hasMoreData {   
-         
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-                
-                print("Infinite scroller action")
-            })
-        }
+//condition to stop calling function
+if self.tableView.infiniteScrollingView!.hasMoreData {   
+
+dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+
+print("Infinite scroller action")
+})
 }
+}
+
+/**
+
+// Set this to false if there is no more data on the server. This should be triggered in the service response.
+self.tableView.infiniteScrollingView?.hasMoreData = false
+
+hasMoreData false will display "No more record" Label at the bottom of the tableview.
+*/
 
 **Remove Loader :**
 
-        self.pullToRefreshView?.stopAnimating()
-        self.infiniteScrollingView?.stopAnimating()
+self.pullToRefreshView?.stopAnimating()
+self.infiniteScrollingView?.stopAnimating()
 
 
 

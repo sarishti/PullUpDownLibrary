@@ -38,7 +38,7 @@ public extension UIScrollView {
 
     /**
      Add the pull to refresh Handler
-     
+
      - parameter actionHandler: actionHandler Add refresh View at end of the table View
      */
     public func addPullToRefreshHandler(actionHandler: ActionHandler) {
@@ -59,8 +59,8 @@ public extension UIScrollView {
         pullToRefreshView?.startAnimating()
     }
     /**
-     Ser Pul to refresh 
-     
+     Ser Pul to refresh
+
      - parameter showsPullToRefresh: true/false
      */
 
@@ -75,13 +75,13 @@ public extension UIScrollView {
             removePullToRefreshObservers()
         }
     }
-    
+
     //MARK: Observer
 
     /**
-     Add Observer on pull to refresh View 
+     Add Observer on pull to refresh View
      */
-    
+
     func addPullToRefreshObservers() {
         if pullToRefreshView?.isObserving != nil && !pullToRefreshView!.isObserving {
             addObserver(pullToRefreshView!, forKeyPath: observeKeyContentOffset, options:.New, context: nil)
@@ -119,7 +119,7 @@ public class PullToRefreshView: UIView {
     public var scrollViewOriginContentTopInset: CGFloat = 0
     /**
      enum
-     
+
      - Stopped:   To stop infinite scrolling
      - Triggered: To trigger the infinte scrolling on
      - Loading:   Load the data
@@ -177,7 +177,7 @@ public class PullToRefreshView: UIView {
     /**
      On stop animating state will become stopped to end loading
      */
-    
+
     public func stopAnimating() {
         state = .Stopped
         if triggeredByUser {
@@ -194,7 +194,7 @@ public class PullToRefreshView: UIView {
     }
 
     //MARK: Scroll View Methods
-    
+
     private func srollViewDidScroll(contentOffset: CGPoint?) {
         if scrollView == nil || contentOffset == nil {
             return
@@ -270,7 +270,7 @@ public class PullToRefreshView: UIView {
     }
 
     // MARK: Basic Views
-    
+
     // Add activity indicator on scroll View
     func initViews() {
         addSubview(defaultView)

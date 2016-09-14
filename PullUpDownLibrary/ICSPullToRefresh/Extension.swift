@@ -10,11 +10,8 @@ import Foundation
 import UIKit
 
 extension UITableView {
-    func loaderStopAnimating() {
-        self.pullToRefreshView?.stopAnimating()
-        self.infiniteScrollingView?.stopAnimating()
-        
-    }
-    
-    
+	func loaderStopAnimating() {
+		self.pullToRefreshView?.stopAnimating()
+		self.infiniteScrollingView?.stopAnimating()
+	}
 }
