@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class TableViewController: UIViewController {
 
 	// MARK: - Properties
@@ -18,10 +19,7 @@ class TableViewController: UIViewController {
 	@IBOutlet weak var tableView: UITableView!
 
 	/// array
-	var arrayData = ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10", "Test11", "Test12", "Test13", "Test14", "Test15", "Test16", "Test17", "Test18", "Test19", "Test20"]
-
-	/// Global Offset value
-	var articleOffSet = 0
+	var arrayData = [String]()
 
 	/// Paggination Limit
 	let articlesLimit = 20
@@ -29,9 +27,9 @@ class TableViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		self.setPullToRefreshOnTable()
+        self.self.setPullToRefreshOnTable()
 		self.setInfiniteScrollOnTable()
-
+		self.fetchData(0)
 		// Do any additional setup after loading the view.
 	}
 
@@ -39,23 +37,23 @@ class TableViewController: UIViewController {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
+
 	// MARK: Pull to refresh
 	/**
      Set the Reuseable component Pull to refresh handler
      */
-	func setPullToRefreshOnTable() {
-		/**
-         *  Add Pull to refresh handler
-         */
-		tableView.addPullToRefreshHandler {
-			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-				/**
-                 When pull to refresh works every time call the fetch data function with offset 0
-                 */
-				self.fetchData(0)
-			})
-		}
-	}
+
+
+    func setPullToRefreshOnTable() {
+        let loadingView = DGElasticPullToRefreshLoadingViewCircle()
+        loadingView.tintColor = UIColor.cyan
+        tableView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
+            self?.fetchData(0)
+            }, loadingView: loadingView)
+        tableView.dg_setPullToRefreshFillColor(UIColor.lightGray)
+        tableView.dg_setPullToRefreshBackgroundColor(tableView.backgroundColor!)
+    }
+
 	// MARK: - Infinite scrolling
 	/**
      Set reuseable component Infinite scroller handler
@@ -63,51 +61,47 @@ class TableViewController: UIViewController {
 	func setInfiniteScrollOnTable() {
 
 		/// Set the font and size of No more Record
-		let fontForInfiniteScrolling = UIFont(name: "HelveticaNeue-Bold", size: 15) ?? UIFont.boldSystemFontOfSize(17)
+		let fontForInfiniteScrolling = UIFont(name: "HelveticaNeue-Bold", size: 15) ?? UIFont.boldSystemFont(ofSize: 17)
 
 		/**
          Add infinite scroller handler
          */
 		self.tableView
-			.addInfiniteScrollingWithHandler(fontForInfiniteScrolling, fontColor: UIColor.redColor(), actionHandler: {
+			.addInfiniteScrollingWithHandler(fontForInfiniteScrolling, fontColor: UIColor.red, actionHandler: {
 				/**
                  If has more data true then scroller works
                  */
 				if self.tableView.infiniteScrollingView!.hasMoreData {
-					dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
 
-						self.loadMoreData(with: self.articleOffSet)
-
-					})
+                    DispatchQueue.global(qos: .default).async {
+                        DispatchQueue.main.async(execute: {
+                            // Send the next starting offset.
+                          self.loadMoreData(with: self.arrayData.count)
+                        })
+                    }
 				}
 
 		})
 	}
 	// MARK: - UITableView DataSource methods
 
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return arrayData.count
 	}
 
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
 
-		guard let cell: TableViewCell = tableView.dequeueReusableCellWithIdentifier(tableViewCellIdentifier, forIndexPath: indexPath) as? TableViewCell else {
+		guard let cell: TableViewCell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath) as? TableViewCell else {
 			return UITableViewCell()
 		}
-
-		cell.textLabel?.text = arrayData[indexPath.row]
-
-		if arrayData.count - 1 == indexPath.row {
-			self.articleOffSet = arrayData.count
-
-		}
+		cell.textLabel?.text = arrayData[(indexPath as NSIndexPath).row]
 
 		return cell
 	}
 
 	// MARK: - Load more
 	/**
-     Load more adata
+     Load more data
      - parameter offset: starting index
      */
 
@@ -120,30 +114,43 @@ class TableViewController: UIViewController {
      - parameter offset: offset value
      */
 
-	func fetchData(offset: Int) {
+	func fetchData(_ offset: Int) {
 
-		if offset > 0 {
-			arrayData.appendContentsOf(["Test21", "Test22", "Test23", "Test24", "Test25", "Test26", "Test27", "Test28", "Test29", "Test30"])
-		}
-		// sleep to show indicator for some time
-		sleep(3)
-		dispatch_async(dispatch_get_main_queue(), { () -> Void in
+		var arrResponseData = [String]()
+
+		DispatchQueue.main.async(execute: { () -> Void in
+			/**
+             *  arrResponse data represent the array of data which will come from service
+             */
+			if offset == 0 {
+				arrResponseData = ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10", "Test11", "Test12", "Test13", "Test14", "Test15", "Test16", "Test17", "Test18", "Test19", "Test20"]
+				self.arrayData = arrResponseData
+				/**
+                 In pull to refresh No more record should not display
+                 */
+				self.tableView.infiniteScrollingView?.hasMoreData = true
+			} else {
+				arrResponseData = ["Test21", "Test22", "Test23", "Test24", "Test25", "Test26", "Test27", "Test28", "Test29", "Test30"]
+				self.arrayData.append(contentsOf: arrResponseData)
+			}
+
+			// sleep to show indicator for some time, though it's not required while service call.
+			sleep(3)
+
 			/**
              *  Remove the Loader of Pull to refresh/Infinite scroller added on extension
              */
 			self.tableView.loaderStopAnimating()
 
-			if self.arrayData.count < self.articlesLimit * 2 && self.arrayData.count > self.articlesLimit {
+			// Condition to stop load more data
+			if arrResponseData.count < self.articlesLimit {
 				/**
                  Has no more data false will show "No more record" at the bottom
                  */
 				self.tableView.infiniteScrollingView?.hasMoreData = false
 			}
-
 			self.tableView.reloadData()
 
 		})
-
 	}
-
 }
