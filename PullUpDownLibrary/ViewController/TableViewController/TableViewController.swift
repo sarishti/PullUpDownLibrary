@@ -45,11 +45,15 @@ class TableViewController: UIViewController {
 
 
     func setPullToRefreshOnTable() {
+        /// Color Added for circle
         let loadingView = DGElasticPullToRefreshLoadingViewCircle()
         loadingView.tintColor = UIColor.cyan
+        
+        /// Handler
         tableView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
             self?.fetchData(0)
             }, loadingView: loadingView)
+        
         tableView.dg_setPullToRefreshFillColor(UIColor.lightGray)
         tableView.dg_setPullToRefreshBackgroundColor(tableView.backgroundColor!)
     }

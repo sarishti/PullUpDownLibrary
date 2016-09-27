@@ -1,18 +1,21 @@
 # PullUpDownLibrary
 ===========
-Swift 3.0
-Protcol Oriented Progarmming (Extension) 
+-> Swift 3.0
+
+-> Xcode 8.0 Compatible 
+
+-> Protcol Oriented Progarmming (Extension) 
 
 ## Summary
 
-PullUpDownLibrary is the customizion of ICSPullToRefresh Library.It provide the falicity to add a label with text "No More Record" at the end of infinite scroller.
+PullUpDownLibrary is the customizion of ICSPullToRefresh and DGElasticPullTo refresh Library.In infinite scroll it provide the falicity to add a label with text "No More Record" at the end of infinite scroller.It use elastic pull to refresh for pull to refresh.
 
 
 ## Use
 
 -> Provide pull to refresh and infinite scroll view functionality.
 
--> In inifite scroll user can stop implementation on basis of particular scenerio.  
+-> In infinite scroll user can stop implementation on basis of particular scenerio.  
 
 -> User can select the color and font for label "No More Record"
 
@@ -21,7 +24,11 @@ PullUpDownLibrary is the customizion of ICSPullToRefresh Library.It provide the 
 
 **Pull to refresh :**
 
+tableView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
 
+        self?.fetchData(0)
+
+    }, loadingView: loadingView)
 
 
 ** Load More Data :**
